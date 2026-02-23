@@ -1,8 +1,7 @@
 name: Daily Portfolio Digest
 on:
   schedule:
-    - cron: '30 2 * * *'  # 2:30 AM UTC = 8 AM IST
-  
+    - cron: '30 2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -23,19 +22,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
+      - name: Write .env file
+        run: |
+          echo '${{ secrets.ENV_FILE }}' > .env
+
       - name: Write Google credentials
         run: |
           echo '${{ secrets.GOOGLE_CREDENTIALS_JSON }}' > credentials.json
-
+      
       - name: Run daily pipeline
-        env:
-          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          ISTOCK_TAB_NAME: ${{ secrets.ISTOCK_TAB_NAME }}
-          USTOCK_TAB_NAME: ${{ secrets.USTOCK_TAB_NAME }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: |
           python src/pipeline.py --mode daily
       
