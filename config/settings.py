@@ -8,7 +8,8 @@ All tuneable parameters live here — don't scatter magic numbers in code.
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=False)
+
 
 # ─────────────────────────────────────────────
 # Google Sheets
