@@ -1,7 +1,7 @@
 name: Daily Portfolio Digest
 on:
   schedule:
-    -  cron: '41 3 * * *'
+    - cron: '59 3 * * *'
   workflow_dispatch:
 
 jobs:
