@@ -1,57 +1,25 @@
-# 📈 Portfolio Intelligence Pipeline
+# Portfolio Intelligence — Agentic LLM System
 
-An end-to-end agentic news monitoring system for your stock portfolio.
-Fetches news for all your Indian + US stocks, runs LLM analysis via Gemini,
-and delivers daily email digests + weekly/monthly deep dives.
+Multi-agent workflow for automated portfolio analysis and rebalancing recommendations.
 
-## Features
-- Reads portfolio from Google Sheets (iStocks + uStocks tabs)
-- Fetches news from Yahoo Finance, MoneyControl, Economic Times RSS
-- Pre-filters and deduplicates news before hitting Gemini (token efficient)
-- Daily email digest with priority-ranked stocks needing attention
-- Appends structured logs to Google Sheet for history
-- Weekly & monthly deep dives using accumulated history
+## How It Works
 
-## File Structure
-```
-portfolio-intelligence/
-├── README.md
-├── requirements.txt
-├── .env                        # API keys (never commit this)
-├── .gitignore
-├── config/
-│   └── settings.py             # All config in one place
-├── src/
-│   ├── sheet_reader.py         # Read portfolio from Google Sheets
-│   ├── news_fetcher.py         # Fetch news from all sources
-│   ├── news_filter.py          # Pre-filter before sending to Gemini
-│   ├── gemini_analyzer.py      # LLM analysis via Gemini API
-│   ├── sheet_writer.py         # Write daily logs back to sheet
-│   ├── email_sender.py         # Send daily digest via Gmail
-│   └── pipeline.py             # Main orchestrator — run this
-├── logs/                       # Runtime logs (gitignored)
-└── output/
-    ├── daily/                  # Daily JSON outputs (gitignored)
-    ├── weekly/                 # Weekly reports
-    └── monthly/                # Monthly reports
-```
+1. **News Agent**: Scrapes financial news, fuzzy-matches tickers
+2. **YouTube Agent**: Extracts insights from creator content via transcripts
+3. **Fundamentals Agent**: Fetches PE, debt, revenue growth from Yahoo/Screener
+4. **Technical Agent**: Calculates DMAs, Bollinger Bands, RSI
+5. **Rebalancing Agent**: Synthesizes all data → recommendations
+6. **Email Report**: Daily automated delivery via Gmail SMTP
 
-## Setup
-1. `pip install -r requirements.txt`
-2. Set up Google Cloud project, enable Sheets API + Gmail API
-3. Download `credentials.json` to project root
-4. Copy `.env.example` to `.env` and fill in values
-5. Run once manually: `python src/pipeline.py --mode daily`
-6. Schedule via cron or n8n
+## Tech Stack
+- Google Gemini API (LLM)
+- DSPy (prompt optimization)
+- Yahoo Finance API, Screener.in
+- GitHub Actions (automation)
 
-## Scheduling (cron example)
-```
-# Daily at 7:30 AM
-30 7 * * 1-5 cd /path/to/portfolio-intelligence && python src/pipeline.py --mode daily
+## Why This Matters
+Traditional portfolio rebalancing requires manual research across 5+ sources. This system automates the full workflow while maintaining decision transparency through structured agent outputs.
 
-# Weekly on Sunday at 8 AM  
-0 8 * * 0 cd /path/to/portfolio-intelligence && python src/pipeline.py --mode weekly
+---
 
-# Monthly on 1st at 8 AM
-0 8 1 * * cd /path/to/portfolio-intelligence && python src/pipeline.py --mode monthly
-```
+*Note: Source code is proprietary. This repo contains architecture documentation only.*
